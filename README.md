@@ -10,6 +10,6 @@
 
 GASのソースコードは下記のchrom拡張機能で管理
 
-https://chrome.google.com/webstore/detail/google-apps-script-github/lfjcgcmkmjjlieihflfhjopckgpelofo
+[Google Apps Script GitHub アシスタント](https://chrome.google.com/webstore/detail/google-apps-script-github/lfjcgcmkmjjlieihflfhjopckgpelofo)
 
-
+[GASをGitHubで簡単管理可能なChrome拡張機能　～導入時に躓いたこと～](https://qiita.com/20731057hh/items/7f76f9e53e9da5c85ae9#%E6%A6%82%E8%A6%81)

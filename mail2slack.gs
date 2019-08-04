@@ -43,7 +43,7 @@ function Mail_forward_setTrigger() {
       var reg = /^[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*/;
       SlackToken = NameRanges[NRange].getRange().getValue();
       if (SlackToken.match(reg) == null){
-        Browser.msgBox( "Slackトークンが不正のため、処理を終了します。");
+        Browser.msgBox("Slackトークンが不正のため、処理を終了します。");
         return;
       }
       SlackToken = NameRanges[NRange].getRange().getValue();

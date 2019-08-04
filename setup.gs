@@ -1,10 +1,15 @@
 function makeSheet() {
+  var res = Browser.msgBox("表示中のシートを編集しますが宜しいでしょうか？", "キャンセルで処理を中断します。", Browser.Buttons.OK_CANCEL);
+  if (res == 'cancel') {
+    return;
+  }
   var sheet = SpreadsheetApp.getActive();
+  
   sheet.getActiveSheet().setName('Gmail転送Bot');
   sheet.getRange('B2').setValue('Token');
   sheet.getRange('C2').setValue('※送信先のSlackトークン');
   sheet.getRange('B3').setValue('送信先');
-  sheet.getRange('C3').setValue('※Slackのメンション or チャンネル');
+  sheet.getRange('C3').setValue('※Slackの@ユーザID or #チャンネル名');
   sheet.getRange('B5').setValue('URL正規表現');
   sheet.getRange('C5').setValue('件名');
   sheet.getRange('B11:C11').setValue('END');

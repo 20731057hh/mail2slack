@@ -40,6 +40,12 @@ function Mail_forward_setTrigger() {
       Nnum += 1;
     }
     else if(tmp == "SlackToken"){
+      var reg = /^[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*/;
+      SlackToken = NameRanges[NRange].getRange().getValue();
+      if (SlackToken.match(reg) == null){
+        Browser.msgBox( "Slackトークンが不正のため、処理を終了します。");
+        return;
+      }
       SlackToken = NameRanges[NRange].getRange().getValue();
       Nnum += 1;
     };
@@ -249,7 +255,7 @@ function Mail_forward() {
       for (var j = 0; j < msgs[i].length; j++) { //メールの数だけ
         if(msgs[i][j].isUnread()){
           Logger.log("i:["+i+"]j:["+j+"]===============================================");
-          postSlack(msgs[i][j].getSubject(),msgs[i][j].getPlainBody(),ToName,URLRegs[URLReg])
+          postSlack(SlackToken, msgs[i][j].getSubject(),msgs[i][j].getPlainBody(),ToName,URLRegs[URLReg])
           msgs[i][j].markRead();//既読に変更
         }
       }
@@ -309,7 +315,7 @@ function deleteTrigger(func) {
 //ToName：Slack送信先
 //URLReg：認証URLの正規表現
 /////////////////////////////////////////////////////////////////////////////////////////////////
-function postSlack(subject, body, ToName, URLReg)  {
+function postSlack(SlackToken, subject, body, ToName, URLReg)  {
   var rep; //検索した文字列を格納する変数
 
   //設定内容を取得

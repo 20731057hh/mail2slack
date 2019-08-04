@@ -1,54 +1,10 @@
-var SLACK_TOKEN = "hoge";
 var warningStatement = "トリガー起動中のため編集禁止です。トリガーを停止してください。"
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//【関数名】
-//カスタムトリガー登録関数（毎分間隔）
-//【引数】
-//var setTriggerParam = {
-//  ver: 2,
-//  setMinutes: 実行分,
-//  setFunc: 実行関数
-//  };
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function setTriggerEM(p) {
-  ScriptApp.newTrigger(p.setFunc).timeBased().everyMinutes(p.setMinutes).create();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//【関数名】
-//カスタムトリガー登録関数 (日時指定)
-//【引数】
-//var setTriggerParam = {
-//  ver: 3,
-//  setDate: 実行日時,
-//  setFunc: 実行関数
-//  };
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function setTriggerDodate(p) {
-  ScriptApp.newTrigger(p.setFunc).timeBased().at(p.setDate).create();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//【関数名】
-//トリガー削除関数
-//【引数】
-//func: 削除対象関数名
-/////////////////////////////////////////////////////////////////////////////////////////////////
-function deleteTrigger(func) {
-  var triggers = ScriptApp.getProjectTriggers();
-  for(var i=0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() == func) {
-      ScriptApp.deleteTrigger(triggers[i]);
-    }
-  }
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //【関数名】
 //カスタムトリガー登録関数
 //【引数】
-//※トリガー実施のため引数無し
+//※引数なし
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function Mail_forward_setTrigger() {
   //実行中かをチェックする
@@ -65,6 +21,7 @@ function Mail_forward_setTrigger() {
   var sheet = bk.getSheetByName('Gmail転送Bot');
   var NameRanges = bk.getNamedRanges();
   var ToName = "";
+  var SlackToken = "";
   var Nnum = 0;
   for(var NRange in NameRanges){
     var tmp = NameRanges[NRange].getName();
@@ -81,9 +38,13 @@ function Mail_forward_setTrigger() {
     }
     else if(tmp == "MailTitles"){
       Nnum += 1;
+    }
+    else if(tmp == "SlackToken"){
+      SlackToken = NameRanges[NRange].getRange().getValue();
+      Nnum += 1;
     };
   };
-  if(Nnum != 3){
+  if(Nnum != 4){
     Browser.msgBox( "「名前付き範囲」が設定されていないため、処理を終了します。");
     return;
   };
@@ -125,6 +86,12 @@ function Mail_forward_setTrigger() {
       var protection = NameRanges[NRange].getRange().protect();
       protection.setDescription(warningStatement);
       protection.setWarningOnly(true);
+    }
+    else if(tmp == "SlackToken"){
+      NameRanges[NRange].getRange().setBackground("#808080")
+      var protection = NameRanges[NRange].getRange().protect();
+      protection.setDescription(warningStatement);
+      protection.setWarningOnly(true);
     };
   };
 
@@ -146,7 +113,7 @@ function Mail_forward_setTrigger() {
     "method": "POST", //POST送信
     "payload": payload //POSTデータ
   };
-  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SLACK_TOKEN, option);
+  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SlackToken, option);
 
   Browser.msgBox( "認証メールのSlack転送を開始します。※1週間後に自動停止します。");
 }
@@ -167,6 +134,7 @@ function Mail_forward_deleteTrigger() {
   var sheet = bk.getSheetByName('Gmail転送Bot');
   var NameRanges = bk.getNamedRanges();
   var ToName = "";
+  var SlackToken = "";
   var Nnum = 0;
   for(var NRange in NameRanges){
     var tmp = NameRanges[NRange].getName();
@@ -179,9 +147,13 @@ function Mail_forward_deleteTrigger() {
     }
     else if(tmp == "MailTitles"){
       Nnum += 1;
+    }
+    else if(tmp == "SlackToken"){
+      SlackToken = NameRanges[NRange].getRange().getValue();
+      Nnum += 1;
     };
   };
-  if(Nnum != 3){
+  if(Nnum != 4){
     Browser.msgBox( "編集制限の解除に失敗しました。シート保護の範囲を確認してください。");
     return;
   };
@@ -219,7 +191,7 @@ function Mail_forward_deleteTrigger() {
     "method": "POST", //POST送信
     "payload": payload //POSTデータ
   };
-  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SLACK_TOKEN, option);
+  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SlackToken, option);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,11 +207,13 @@ function Mail_forward() {
   var sheet = bk.getSheetByName('Gmail転送Bot');
   var NameRanges = bk.getNamedRanges();
   var ToName = "";
-  var URLReg = ""
+  var SlackToken = "";
+  var URLReg = "";
   var MailTitle = ""
   var URLRegs = "";
   var MailTitles = "";
   var Nnum = 0;
+  
   for(var NRange in NameRanges){
     var tmp = NameRanges[NRange].getName();
     if(tmp == "ToName"){
@@ -254,8 +228,12 @@ function Mail_forward() {
       MailTitles = NameRanges[NRange].getRange().getValues();
       Nnum += 1;
     }
+    else if(tmp == "SlackToken"){
+      SlackToken = NameRanges[NRange].getRange().getValues();
+      Nnum += 1;
+    };
   }
-  if(Nnum != 3){
+  if(Nnum != 4){
     Browser.msgBox( "「名前付き範囲」が設定されていないため、処理を終了します。");
     Mail_forward_deleteTrigger();
     return;
@@ -275,6 +253,49 @@ function Mail_forward() {
           msgs[i][j].markRead();//既読に変更
         }
       }
+    }
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//【関数名】
+//カスタムトリガー登録関数（毎分間隔）
+//【引数】
+//var setTriggerParam = {
+//  ver: 2,
+//  setMinutes: 実行分,
+//  setFunc: 実行関数
+//  };
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function setTriggerEM(p) {
+  ScriptApp.newTrigger(p.setFunc).timeBased().everyMinutes(p.setMinutes).create();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//【関数名】
+//カスタムトリガー登録関数 (日時指定)
+//【引数】
+//var setTriggerParam = {
+//  ver: 3,
+//  setDate: 実行日時,
+//  setFunc: 実行関数
+//  };
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function setTriggerDodate(p) {
+  ScriptApp.newTrigger(p.setFunc).timeBased().at(p.setDate).create();
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//【関数名】
+//トリガー削除関数
+//【引数】
+//func: 削除対象関数名
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function deleteTrigger(func) {
+  var triggers = ScriptApp.getProjectTriggers();
+  for(var i=0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() == func) {
+      ScriptApp.deleteTrigger(triggers[i]);
     }
   }
 }
@@ -340,6 +361,6 @@ function postSlack(subject, body, ToName, URLReg)  {
     "method": "POST", //POST送信
     "payload": payload2 //POSTデータ
   };
-  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SLACK_TOKEN, option);
-  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SLACK_TOKEN, option2);
+  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SlackToken, option);
+  UrlFetchApp.fetch("https://slack.com/api/chat.postMessage?token=" + SlackToken, option2);
 }

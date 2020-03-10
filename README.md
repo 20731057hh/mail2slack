@@ -6,22 +6,15 @@
 本文内のURLを正規表現で取得し、QRコードの転送も行う。
 ※QRコードはGoogleのAPIを使用
 
-### GASでのGitHubの管理方法
-
-GASのソースコードは下記のchrom拡張機能を利用してGitHubで管理しています。
-
-[Google Apps Script GitHub アシスタント](https://chrome.google.com/webstore/detail/google-apps-script-github/lfjcgcmkmjjlieihflfhjopckgpelofo)
-
-[GASをGitHubで簡単管理可能なChrome拡張機能　～導入時に躓いたこと～](https://qiita.com/20731057hh/items/7f76f9e53e9da5c85ae9#%E6%A6%82%E8%A6%81)
-
 ## 事前準備
 
 ForkやGitからソースコードをご自身のスクリプトエディタに移行できる方は、「使い方」からお読みください。
 
 【前提条件】
 * GitHubのアカウントでログイン済みであること
-* Google Apps Script GitHub アシスタントを導入済みであること
+* Google Apps Script GitHub アシスタントを導入済みであること ※導入方法は[こちら](https://qiita.com/20731057hh/items/7f76f9e53e9da5c85ae9#%E6%A6%82%E8%A6%81)
 
+【セットアップ】
 1. 本リポジトリ（mail2slack)をForkする  
   画像右端にあるForkボタンから自分のリポジトリにmail2slackを取得できます。  
     <img src="https://github.com/20731057hh/mail2slack/blob/imags/fork.png" width="500">

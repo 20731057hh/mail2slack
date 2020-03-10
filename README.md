@@ -41,13 +41,13 @@ ForkやGitからソースコードをご自身のスクリプトエディタに�
 1. SlackのTokenを設定する  
 　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/token.png" width="300">
    * SlackのTokenの取得方法は[こちら]（https://qiita.com/ykhirao/items/0d6b9f4a0cc626884dbb)
-   ＊ Slackアカウントの権限によってはTokenが取得できない場合もあります
+   * Slackアカウントの権限によってはTokenが取得できない場合もあります
 1. Slackの送信先を設定する  
 　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/send.png" width="300">
    * 個人のDMに送信する場合は@を含めてメンションを設定してください
    * 表示名を変えている場合は、表示名でのメンションでは送信できません
    * チャンネルに送信する場合は、#も含めてチャンネル名を設定してください
-   ＊ プライベートチャンネルの場合も#が必要です
+   * プライベートチャンネルの場合も#が必要です
 1. QRコード化したいURLの正規表現を設定する  
 　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/url.png" width="150">
    * 複数の条件に一致する場合は、最初の１つ目が対象となります

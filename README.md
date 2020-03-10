@@ -40,7 +40,7 @@ ForkやGitからソースコードをご自身のスクリプトエディタに�
 【設定方法】
 1. SlackのTokenを設定する  
 　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/token.png" width="300">
-   * SlackのTokenの取得方法は[こちら]（https://qiita.com/ykhirao/items/0d6b9f4a0cc626884dbb)
+   * SlackのTokenの取得方法は[こちら](https://qiita.com/ykhirao/items/0d6b9f4a0cc626884dbb)
    * Slackアカウントの権限によってはTokenが取得できない場合もあります
 1. Slackの送信先を設定する  
 　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/send.png" width="300">

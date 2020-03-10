@@ -4,7 +4,7 @@
 
 特定の件名を検知してslackにメール本文を転送する。
 本文内のURLを正規表現で取得し、QRコードの転送も行う。
-※QRコードはGoogleのAPIを使用
+※QRコード化はGoogleのAPIを使用
 
 ## 事前準備
 
@@ -26,15 +26,34 @@ ForkやGitからソースコードをご自身のスクリプトエディタに�
 1. 実行時にgoogleの承認が発生するので承認する
 1. シート「Gmail転送Bot」が作成されたら成功
 
-
 ## 使い方
 【前提条件】
 * 「mail2slack」のメニューが表示されていること
 
 【シート作成】
-1. 「mail2slack」のメニューが表示されるので、「シート作成」を実行する  
+1. 「mail2slack」のメニューから「シート作成」を実行する  
     <img src="https://github.com/20731057hh/mail2slack/blob/imags/sheetCriate.png" width="200">
-1. 実行時にgoogleの承認が発生するので承認する
-1. シート「Gmail転送Bot」が作成されたら成功
+1. 初回実行時のみGoogle承認が表示されるので承認する
+1. シート「Gmail転送Bot」が作成されたら成功  
+    <img src="https://github.com/20731057hh/mail2slack/blob/imags/sheet.png" width="150">
 
-
+【設定方法】
+1. SlackのTokenを設定する  
+　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/token.png" width="300">
+   * SlackのTokenの取得方法は[こちら]（https://qiita.com/ykhirao/items/0d6b9f4a0cc626884dbb)
+   ＊ Slackアカウントの権限によってはTokenが取得できない場合もあります
+1. Slackの送信先を設定する  
+　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/send.png" width="300">
+   * 個人のDMに送信する場合は@を含めてメンションを設定してください
+   * 表示名を変えている場合は、表示名でのメンションでは送信できません
+   * チャンネルに送信する場合は、#も含めてチャンネル名を設定してください
+   ＊ プライベートチャンネルの場合も#が必要です
+1. QRコード化したいURLの正規表現を設定する  
+　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/url.png" width="150">
+   * 複数の条件に一致する場合は、最初の１つ目が対象となります
+   ＊ 検索条件でQRコード化されるだけなので、URL以外の文字列でもQRコード化されます
+1. 検索するメールの件名を設定する  
+　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/title.png" width="200">
+   * 入力した件名に部分一致するタイトルのメールかつ、未読のメールがSlack送信対象となります
+   * メールを転送したら既読に更新します
+   * 受診時ではなく、未読メールを定期的にチェックしているので対象メールを未読にするとSlackに転送されます

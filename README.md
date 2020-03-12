@@ -50,7 +50,7 @@ ForkやGitからソースコードをご自身のスクリプトエディタに�
 1. QRコード化したいURLの正規表現を設定する  
 　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/url.png" width="150">
    * 複数の条件に一致する場合は、最初の１つ目が対象となります
-   ＊ 検索条件でQRコード化されるだけなので、URL以外の文字列でもQRコード化されます
+   * 検索条件でQRコード化されるだけなので、URL以外の文字列でもQRコード化されます
 1. 検索するメールの件名を設定する  
 　　<img src="https://github.com/20731057hh/mail2slack/blob/imags/title.png" width="200">
    * 入力した件名に部分一致するタイトルのメールかつ、未読のメールがSlack送信対象となります
